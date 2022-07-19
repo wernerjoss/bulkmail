@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#....ported to python3 02/2020
+# ....ported to python3 02/2020
 # ....bulkmail.py: send bulk email to recipients in RecListFileName
 # ....Werner Joss, 2017,2018,2020
 # ....License: GPL
@@ -61,7 +61,7 @@ def send_email(FROM, TO, SUBJECT, TEXT, att_file):
 			LogFile.write(logtext)
 
 def usage(progname):
-	print('usage: %s [-l -s -n] -r <RecListFileName> -m <MsgFileName>' % progname)
+	print('usage: %s [-l -s -n] -r <RecListFileName> -m <MsgFileName> -a <AttachFileName>' % progname)
 	print('(-l = create Logfile, -s = Simulate, -n = Nice)')
 	sys.exit(2)
 
