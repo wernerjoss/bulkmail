@@ -6,38 +6,27 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QPlainTextE
 
 from PyQt5.QtCore import QProcess
 import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+import bmgui_layout
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
         
     def __init__(self):
         super().__init__()
-
+        
         self.p = None
         self.MsgFile = 'message.txt'
         self.RecFile = 'reclist.lst'
-    
-        self.selRecFilebtn = QPushButton("Select Recipients File")
-        self.selRecFilebtn.pressed.connect(self.openRecFileDialog)
-        self.selMsgFilebtn = QPushButton("Select MessageFile")
-        self.selMsgFilebtn.pressed.connect(self.openMsgFileDialog)
-        self.btn = QPushButton("Execute")
-        self.btn.pressed.connect(self.start_process)
-        self.text = QPlainTextEdit()
-        self.text.setReadOnly(True)
-        
-        l = QVBoxLayout()
-        l.addWidget(self.selRecFilebtn)
-        l.addWidget(self.selMsgFilebtn)
-        l.addWidget(self.btn)
-        l.addWidget(self.text)
+        self.Attachment = ''
+        self.setupUi(self)
 
-        w = QWidget()
-        w.setLayout(l)
+        self.pushButton.pressed.connect(self.openRecFileDialog)
+        self.pushButton_2.pressed.connect(self.openMsgFileDialog)
+        self.pushButton_3.pressed.connect(self.start_process)
+        self.pushButton_4.pressed.connect(self.openAttachmentDialog)
         
-        self.setCentralWidget(w)
-
     def message(self, s):
-        self.text.appendPlainText(s)
+        self.plainTextEdit.appendPlainText(s)
 
     def start_process(self):
         if self.p is None:  # No process running.
@@ -47,11 +36,32 @@ class MainWindow(QMainWindow):
             self.p.readyReadStandardError.connect(self.handle_stderr)
             self.p.stateChanged.connect(self.handle_state)
             self.p.finished.connect(self.process_finished)  # Clean up once complete.
-            recipients = '-r ' + self.RecFile
-            msg = '-m ' + self.MsgFile
-            args = '-s ' + recipients + ' ' + msg
-            self.p.start("python3", ['bulkmail.py', '-s', '-r', self.RecFile, '-m', self.MsgFile])  # JEDES arg extra !!
-
+            ArgList = ['bulkmail.py']
+            if (self.checkBox.isChecked() == True):
+                ArgList.append('-s')
+            if (self.checkBox_2.isChecked() == True):
+                ArgList.append('-l')
+            if (self.checkBox_3.isChecked() == True):
+                ArgList.append('-n')
+            ArgList.append('-r')
+            ArgList.append(self.RecFile)
+            ArgList.append('-m')
+            ArgList.append(self.MsgFile)
+            if (len(self.Attachment) < 1):
+                ArgList.append('-a')
+                ArgList.append(self.Attachment)
+            #   print(ArgList)
+            self.p.start("python3", ArgList)  # JEDES arg extra !!
+            
+    def openAttachmentDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;All Files (*.*)", options=options)
+        if fileName:
+            #   print(fileName)
+            self.Attachment = fileName
+            self.message('Attachment: ' + self.Attachment)
+    
     def openRecFileDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -93,11 +103,14 @@ class MainWindow(QMainWindow):
         #   self.message("Process finished.")
         self.p = None
 
-
 app = QApplication(sys.argv)
 
 w = MainWindow()
-w.resize(1440,1024)
+#   w.resize(1440,1024)
+title = "bmgui.py - Frontend for bulkmail.py (C) Werner Joss 2022"
+w.setWindowTitle(title)
+
 w.show()
 
+app.setStyle("Fusion")
 app.exec_()
