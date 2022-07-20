@@ -90,8 +90,8 @@ try:
 	progname = sys.argv[0]
 	argv = sys.argv[1:] # wichtig !
 	opts, args = getopt.getopt(argv,"lsnhr:m:a:",["RecListFileName=","MsgFileName=","AttachFileName="])
-	#print 'opts',opts
-	#print 'argv',argv
+	#print ('opts',opts)
+	#print ('argv',argv)
 except getopt.GetoptError as err:
 	print(str(err))
 	usage(progname)
