@@ -5,6 +5,16 @@ As an Addition to the CLI Version, it also has a GUI Frontend, written with PyQt
 
 ![](screenshot.png)
 
+## Usage:
+The CLI Version, bulkmail.py, is the core function of this Program.  
+It takes the Recipient File Name and the Message File Name as mandatory Arguments, others for Simulation (Test before actual sending!),
+Logfile creation, Nice Title and Attachment (File) are optional.  
+Configuration (SMTP Server, Sender Credentials) is (currently) inside the source code and must be adapted to your needs before actual use.  
+bulkmail.yp should be stored somwhere in your PATH, e.g. /usr/local/bin .  
+The same applies for the GUI Frontend bmgui.py.
+Be sure to provide the Recipints List File in the correct Format !  
+(each Line holds Fist Name, blank, Last Name, blank, <email address> - empty Lines or Lines beginning with # are ignored).
+
 ## Hints:
 Message sent is from MsgFileName, preceeded by 'Hallo <Name>,\n'  
 RecListFileName must contain one Recipient per line in the form 'Vorname Name <email>'	note: surrounding <> for email Adress is required !  
