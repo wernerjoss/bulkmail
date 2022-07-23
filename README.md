@@ -1,6 +1,6 @@
 ## bulkmail.py: send bulk email to recipients in RecListFileName
 
-This is an improved Version from this [original gist](https://gist.github.com/wernerjoss/9ba0d815bb91d043f929d98670f99064)
+This is an improved Version from this [original gist](https://gist.github.com/wernerjoss/9ba0d815bb91d043f929d98670f99064).  
 After some more improvements and future plannings (see TODO) I decided to make a real project out of it.  
 As an Addition to the CLI Version, it also has a GUI Frontend, written with PyQt5:
 
