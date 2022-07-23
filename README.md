@@ -1,6 +1,7 @@
 ## bulkmail.py: send bulk email to recipients in RecListFileName
 
 This is an improved Version from this [original gist](https://gist.github.com/wernerjoss/9ba0d815bb91d043f929d98670f99064)
+After some more improvements and future plannings (see TODO) I decided to make a real project out of it.  
 As an Addition to the CLI Version, it also has a GUI Frontend, written with PyQt5:
 
 ![](screenshot.png)
@@ -8,10 +9,10 @@ As an Addition to the CLI Version, it also has a GUI Frontend, written with PyQt
 ## Usage:
 The CLI Version, bulkmail.py, is the core function of this Program.  
 It takes the Recipient File Name and the Message File Name as mandatory Arguments, others for Simulation (Test before actual sending!),
-Logfile creation, Nice Title and Attachment (File) are optional.  
+Logfile creation, Nice Salutation and Attachment (File) are optional.  
 Configuration (SMTP Server, Sender Credentials) is (currently) inside the source code and must be adapted to your needs before actual use.  
-bulkmail.yp should be stored somwhere in your PATH, e.g. /usr/local/bin .  
-The same applies for the GUI Frontend bmgui.py.
+bulkmail.py should be stored somewhere in your PATH, e.g. /usr/local/bin .  
+The same applies for the GUI Frontend bmgui.py/bmgui_layout.py.
 Be sure to provide the Recipints List File in the correct Format !  
 (each Line holds Fist Name, blank, Last Name, blank, <email address> - empty Lines or Lines beginning with # are ignored).
 
@@ -29,4 +30,6 @@ add Attach File Option 11.03.18
 fix some bugs 18.03.18  
 
 ## TODO:
+- Localisation (say 'Hallo' or 'Hello', 'Liebe(r)' or 'Dear' to Recipients...)
+- move Configuration to separate yaml or json file
 - enable optional encryption for recipients from local keyring
