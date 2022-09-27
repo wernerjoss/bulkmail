@@ -1,7 +1,7 @@
 ## bulkmail.py: send bulk email to recipients in RecListFileName
 
 This Program is a bulk Mailer, written in Python 3, intended exactly for what the name indicates:  
-Sending Mail to a List of recipients, but, as opposed to the standard CC Feature from conventional MUA's, each individual Mail ist personalised,
+Sending Mail to a List of recipients, but, as opposed to the standard CC (or BCC) Feature from conventional MUA's, each individual Mail ist personalised,
 which means, each Recipient is addressed by his/her first Name.  
 Additionally, there is an Option 'nice' which can be used to make the Text even more nice (by using 'Liebe(r) XYZ' instead of 'Hallo XYZ').  
 And, yes, this nice Approach is even gender sensitive :-)
