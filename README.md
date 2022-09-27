@@ -1,11 +1,11 @@
 ## bulkmail.py: send bulk email to recipients in RecListFileName
 
 This Program is a bulk Mailer, written in Python 3, intended exactly for what the name indicates:  
-Sending Mail to a List of recipients, but, as opposed to the standard CC Feature from conventinal MUA's, each individual Mail ist personalised,
+Sending Mail to a List of recipients, but, as opposed to the standard CC Feature from conventional MUA's, each individual Mail ist personalised,
 which means, each Recipient is addressed by his/her first Name.  
 Additionally, there is an Option 'nice' which can be used to make the Text even more nice (by using 'Liebe(r) XYZ' instead of 'Hallo XYZ').  
 And, yes, this nice Approach is even gender sensitive :-)
-For a History about Develompment, see the following [Blog Post](https://hoernerfranzracing.de/werner/blog/spam-schleuder-version-2-0).
+For a History about Develompment, see [this Blog Post](https://hoernerfranzracing.de/werner/blog/spam-schleuder-version-2-0).
 
 This is an improved Version from this [original gist](https://gist.github.com/wernerjoss/9ba0d815bb91d043f929d98670f99064).  
 After some more improvements and future plannings (see TODO) I decided to make a real project out of it.  
@@ -37,7 +37,5 @@ add Attach File Option 11.03.18
 fix some bugs 18.03.18  
 
 ## TODO:
-- provide Option for configurable Delay between sent Mails to avoid possible Restrictions from SMTP Mailers w.r. to max. No# of sent Mails per Hour (or Day)
 - Localisation (say 'Hallo' or 'Hello', 'Liebe(r)' or 'Dear' to Recipients...)
-- move Configuration to separate yaml or json file
 - enable optional encryption for recipients from local keyring

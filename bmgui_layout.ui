@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>1041</width>
+      <width>1281</width>
       <height>80</height>
      </rect>
     </property>
@@ -42,6 +42,16 @@
       <widget class="QCheckBox" name="checkBox_3">
        <property name="text">
         <string>Nice</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Delay [s]</string>
        </property>
       </widget>
      </item>

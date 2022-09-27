@@ -1,0 +1,4 @@
+FROM: George Bush <ghwbush@whitehouse.gov>
+pwd: obama
+smtp_server: smtp.whitehouse.gov
+user: ghwbush

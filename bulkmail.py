@@ -14,15 +14,16 @@
 # ....add Attach File Option 11.03.18
 # ....fix some bugs 18.03.18
 
-import getopt, sys
+import getopt, os, sys
 import smtplib
 from email.utils import formatdate
-import datetime
+import time, datetime
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 import codecs
 import gender_guesser.detector as gender_detector
+import yaml
 
 def send_email(FROM, TO, SUBJECT, TEXT, att_file):
 
@@ -61,18 +62,36 @@ def send_email(FROM, TO, SUBJECT, TEXT, att_file):
 			LogFile.write(logtext)
 
 def usage(progname):
-	print('usage: %s [-l -s -n] -r <RecListFileName> -m <MsgFileName> -a <AttachFileName>' % progname)
+	print('usage: %s [-l -s -n -d Delay] -r <RecListFileName> -m <MsgFileName> -a <AttachFileName>' % progname)
 	print('(-l = create Logfile, -s = Simulate, -n = Nice)')
 	sys.exit(2)
 
-#  Config (global variables):
-FROM = 'George Bush <ghwbush@whitehouse.gov>'
-# your smtp server credentials:
-smtp_server = "smtp.whitehouse.gov"
-user = "ghwbush"
-pwd = "obama"
+# read config from yaml file:
+cfgpath = os.path.abspath(os.path.dirname(__file__))
+try:
+	cfgfile = cfgpath + '/bulkmail.yaml'	# config file must reside in same Dir as Program !
+	with open(cfgfile, "r") as configfile:
+		cfg = yaml.load(configfile, Loader=yaml.FullLoader)
+		configfile.close()
+except:	# Defaults:
+	print("Warning: Config File not found, using Defaults (which will most likely NOT work!")
+	cfg = {
+		'FROM': 'George Bush <ghwbush@whitehouse.gov>',
+		'smtp_server': 'smtp1.whitehouse.gov',
+		'user': 'gbush',
+		'pwd': 'obama'
+	}
 
-# ....Defaults:
+# print('FROM:', cfg['FROM'])
+# print('smtp_server:', cfg['smtp_server'])
+# print('user:', cfg['user'])
+# print('pwd:', cfg['pwd'])
+# sys.exit(0) 
+
+FROM = cfg['FROM']
+smtp_server = cfg['smtp_server']
+user = cfg['user']
+pwd = cfg['pwd']
 
 Simulate = False	# nomen est omen :)
 Nice = False #  True: Anrede 'Liebe(r)' statt 'Hallo' :)
@@ -86,10 +105,11 @@ MaxMsgNum = 128 # max. no# of messages to be sent in one run (SPAM Protection!) 
 RecListFileName = ''
 MsgFileName = ''
 AttachFileName = ''
+Delay = 0
 try:
 	progname = sys.argv[0]
 	argv = sys.argv[1:] # wichtig !
-	opts, args = getopt.getopt(argv,"lsnhr:m:a:",["RecListFileName=","MsgFileName=","AttachFileName="])
+	opts, args = getopt.getopt(argv,"lsnhd:r:m:a:",["RecListFileName=","MsgFileName=","AttachFileName=","Delay="])
 	#print ('opts',opts)
 	#print ('argv',argv)
 except getopt.GetoptError as err:
@@ -104,6 +124,9 @@ for opt, arg in opts:
 		MsgFileName = arg
 	elif opt in ("-a", "--AttachFileName"):
 		AttachFileName = arg
+	elif opt in ("-d", "--Delay"):
+		Delay = int(arg)	# wichtig: type conv !
+		#	print ('Delay', Delay)
 	elif opt == '-l':
 		CreateLogFile = True
 		#   print ('CreateLogFile')
@@ -185,6 +208,8 @@ try:
 				print('Message %d from %s has been sent to: %s' % (lineNum, MsgFileName, TO))
 			else:
 				print('Message %d from %s would be sent to: %s' % (lineNum, MsgFileName, TO))
+			if (Delay > 0):
+				time.sleep(Delay)
 			lineNum += 1
 			LogMsg += line + '\n'
 			if CreateLogFile:

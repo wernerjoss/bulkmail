@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QPlainTextE
                                 QVBoxLayout, QWidget, QFileDialog)
 
 from PyQt5.QtCore import QProcess
-import sys
+import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 import bmgui_layout
 
@@ -36,21 +36,29 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
             self.p.readyReadStandardError.connect(self.handle_stderr)
             self.p.stateChanged.connect(self.handle_state)
             self.p.finished.connect(self.process_finished)  # Clean up once complete.
-            ArgList = ['bulkmail.py']
+            expath = os.path.abspath(os.path.dirname(__file__))
+            exfile = expath + '/bulkmail.py'    # CLI Version must reside in same Dir as GUI Version !
+            ArgList = [exfile]
             if (self.checkBox.isChecked() == True):
                 ArgList.append('-s')
             if (self.checkBox_2.isChecked() == True):
                 ArgList.append('-l')
             if (self.checkBox_3.isChecked() == True):
                 ArgList.append('-n')
+            Delay = 0
+            if (self.spinBox.value() > 0):
+                Delay = self.spinBox.value()
+                # self.message("Delay:" + str(Delay))
+                ArgList.append('-d')
+                ArgList.append(str(Delay))
             ArgList.append('-r')
             ArgList.append(self.RecFile)
             ArgList.append('-m')
             ArgList.append(self.MsgFile)
-            if (len(self.Attachment) < 1):
+            if (len(self.Attachment) > 1):
                 ArgList.append('-a')
                 ArgList.append(self.Attachment)
-            #   print(ArgList)
+            print(ArgList)
             self.p.start("python3", ArgList)  # JEDES arg extra !!
             
     def openAttachmentDialog(self):
