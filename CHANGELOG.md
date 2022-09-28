@@ -1,3 +1,10 @@
+# v0.1.2
+##  28/09/2022
+
+1. [](#new)
+    * Add Option Help (GUI Version)
+    * Open selected Recipients/Message File with Editor before sending (GUI Version)
+
 # v0.1.1
 ##  26/09/2022
 

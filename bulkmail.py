@@ -79,7 +79,8 @@ except:	# Defaults:
 		'FROM': 'George Bush <ghwbush@whitehouse.gov>',
 		'smtp_server': 'smtp1.whitehouse.gov',
 		'user': 'gbush',
-		'pwd': 'obama'
+		'pwd': 'obama',
+		'editor': 'kate'
 	}
 
 # print('FROM:', cfg['FROM'])

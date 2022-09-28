@@ -8,6 +8,8 @@ from PyQt5.QtCore import QProcess
 import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 import bmgui_layout
+import yaml
+import webbrowser
 
 class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
         
@@ -24,6 +26,26 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
         self.pushButton_2.pressed.connect(self.openMsgFileDialog)
         self.pushButton_3.pressed.connect(self.start_process)
         self.pushButton_4.pressed.connect(self.openAttachmentDialog)
+        self.pushButton_5.pressed.connect(self.help)
+        # read config from yaml file:
+        cfgpath = os.path.abspath(os.path.dirname(__file__))
+        try:
+            cfgfile = cfgpath + '/bulkmail.yaml'	# config file must reside in same Dir as Program !
+            with open(cfgfile, "r") as configfile:
+                cfg = yaml.load(configfile, Loader=yaml.FullLoader)
+                configfile.close()
+        except:	# Defaults:
+            cfg = {
+                'FROM': 'George Bush <ghwbush@whitehouse.gov>',
+                'smtp_server': 'smtp1.whitehouse.gov',
+                'user': 'gbush',
+                'pwd': 'obama',
+                'editor': 'kate'
+            }
+        try:
+            self.editor = cfg['editor']
+        except:
+            self.editor = 'kate'
         
     def message(self, s):
         self.plainTextEdit.appendPlainText(s)
@@ -78,6 +100,10 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
             #   print(fileName)
             self.RecFile = fileName
             self.message('Recipient File: ' + self.RecFile)
+            if self.p is None:
+                self.p = QProcess()
+                self.p.finished.connect(self.process_finished)  # Clean up once complete.
+                self.p.start(self.editor, [self.RecFile])
     
     def openMsgFileDialog(self):
         options = QFileDialog.Options()
@@ -87,6 +113,10 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
             #   print(fileName)
             self.MsgFile = fileName
             self.message('Message File: ' + self.MsgFile)
+            if self.p is None:
+                self.p = QProcess()
+                self.p.finished.connect(self.process_finished)  # Clean up once complete.
+                self.p.start(self.editor, [self.MsgFile])
     
     def handle_stderr(self):
         data = self.p.readAllStandardError()
@@ -107,15 +137,20 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
         state_name = states[state]
         #   self.message(f"State changed: {state_name}")
 
+    def help(self):
+        browser = webbrowser.get()
+        Link = "https://github.com/wernerjoss/bulkmail/blob/main/README.md"
+        browser.open_new(Link)
+
     def process_finished(self):
         #   self.message("Process finished.")
         self.p = None
-
+    
 app = QApplication(sys.argv)
 
 w = MainWindow()
 #   w.resize(1440,1024)
-title = "bmgui.py - Frontend for bulkmail.py (C) Werner Joss 2022"
+title = "bmgui.py v 0.1.2 - Frontend for bulkmail.py (C) Werner Joss 2022"
 w.setWindowTitle(title)
 
 w.show()
