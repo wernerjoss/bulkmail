@@ -80,7 +80,8 @@ except:	# Defaults:
 		'smtp_server': 'smtp1.whitehouse.gov',
 		'user': 'gbush',
 		'pwd': 'obama',
-		'editor': 'kate'
+		'editor': 'kate',
+		'lang': 'de'
 	}
 
 # print('FROM:', cfg['FROM'])
@@ -184,6 +185,10 @@ try:
 	line = RecListFile.readline();  # read 1st line
 	#	print(line)
 	lineNum = 1
+	try:
+		lang = cfg['lang']
+	except:
+		lang = 'de'
 	while line:
 		line = line.strip()
 		#	print(line)
@@ -196,12 +201,17 @@ try:
 			TO.append(Vorname + ' ' + Name + ' ' + mailadr)
 			gender = d.get_gender(Vorname)
 			# print('Gender:', gender)
-			Greet = 'Hallo' # default
-			if (Nice):
-				if (gender == 'male'):
-					Greet = 'Lieber'
-				elif (gender == 'female'):
-					Greet = 'Liebe'
+			if (lang == 'de'):
+				Greet = 'Hallo' # default
+				if (Nice):
+					if (gender == 'male'):
+						Greet = 'Lieber'
+					elif (gender == 'female'):
+						Greet = 'Liebe'
+			else:
+				Greet = 'Hello'
+				if (Nice):
+					Greet = 'Dear'
 			TEXT = '%s %s,\n%s ' % (Greet, Vorname, Msg)
 			# print('%s %s\n' % (Greet, Vorname))
 			if (not Simulate):

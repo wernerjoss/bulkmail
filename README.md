@@ -47,6 +47,4 @@ add Attach File Option 11.03.18
 fix some bugs 18.03.18  
 
 ## TODO:
-- Session Management (remember last used Files...) ?
-- Localisation (say 'Hallo' or 'Hello', 'Liebe(r)' or 'Dear' to Recipients...)
 - enable optional encryption for recipients from local keyring

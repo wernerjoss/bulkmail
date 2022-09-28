@@ -2,6 +2,7 @@
 ##  28/09/2022
 
 1. [](#new)
+    * Localisation - only german, english are supported via 'lang' Option (de or en) in Config File
     * Add Option Help (GUI Version)
     * Open selected Recipients/Message File with Editor before sending (GUI Version)
 
