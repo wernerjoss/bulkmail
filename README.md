@@ -13,6 +13,13 @@ As an Addition to the CLI Version, it also has a GUI Frontend, written with PyQt
 
 ![](screenshot.png)
 
+## Requirements:
+The CLI Version needs the following nonstandard Python3 Package installed:
+- [gender-guesser](https://pypi.org/project/gender-guesser/)
+which can lead to some confusion, e.g. with Python3 from Debian 12, this can be solved by creating a [virtual environment](https://python.land/virtual-environments/virtualenv), in which case there must also [PyYAML](https://pypi.org/project/PyYAML/) be installed.
+
+The GUI Frontend also needs PyQt5.
+
 ## Usage:
 The CLI Version, bulkmail.py, is the core function of this Program.  
 It takes the Recipient File Name and the Message File Name as mandatory Arguments, others for Simulation (Test before actual sending!),

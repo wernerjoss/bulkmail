@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 
-# ....ported to python3 02/2020
 # ....bulkmail.py: send bulk email to recipients in RecListFileName
-# ....Werner Joss, 2017,2018,2020
+# ....Werner Joss, 2017 - 2023
 # ....License: GPL
 # ....Message is from MsgFileName, preceeded by 'Hallo <Name>,\n'
 # ....RecListFileName must contain one Recipient per line in the form 'Vorname Name <email>'	note: surrounding <> for email Adress is required !
 # ....Default Subject may be overridden in MsgFile (line starting with 'Subject:'
 # ....this can send messages with utf-8 encoding, not just ascii (as bulkmail_asc.py) 30.04.17
 # ....add max No of Msgs sent per run (SPAM Protection) 10.03.18
-# ....guess gender :) - see https://pypi.python.org/pypi/gender-detector 10.03.18 - replaced by gender_guesser: https://pypi.org/project/gender-guesser/ 02/2020
+# ....guess gender :) - see https://pypi.python.org/pypi/gender-detector 10.03.18 - 
+# ....replaced by gender_guesser: https://pypi.org/project/gender-guesser/ 02/2020
 # ....getopt Argument Parser 11.03.18
 # ....add Attach File Option 11.03.18
 # ....fix some bugs 18.03.18
+# ....ported to python3 02/2020
+
+# Note: from python3.11 (Debian bookworm), this needs a dedicated environment, e.g. in ~/.env/venv with gender-guesser and PyYAML installed,
+# see https://python.land/virtual-environments/virtualenv
 
 import getopt, os, sys
 import smtplib
@@ -22,8 +26,8 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 import codecs
+import yaml # needed for cfgfile
 import gender_guesser.detector as gender_detector
-import yaml
 
 def send_email(FROM, TO, SUBJECT, TEXT, att_file):
 
@@ -73,6 +77,7 @@ try:
 	with open(cfgfile, "r") as configfile:
 		cfg = yaml.load(configfile, Loader=yaml.FullLoader)
 		configfile.close()
+		
 except:	# Defaults:
 	print("Warning: Config File not found, using Defaults (which will most likely NOT work!")
 	cfg = {
@@ -83,12 +88,7 @@ except:	# Defaults:
 		'editor': 'kate',
 		'lang': 'de'
 	}
-
-# print('FROM:', cfg['FROM'])
-# print('smtp_server:', cfg['smtp_server'])
-# print('user:', cfg['user'])
-# print('pwd:', cfg['pwd'])
-# sys.exit(0) 
+	print(cfg)
 
 FROM = cfg['FROM']
 smtp_server = cfg['smtp_server']
