@@ -5,7 +5,7 @@ Sending Mail to a List of recipients, but, as opposed to the standard CC (or BCC
 which means, each Recipient is addressed by his/her first Name.  
 Additionally, there is an Option 'nice' which can be used to make the Text even more nice (by using 'Liebe(r) XYZ' instead of 'Hallo XYZ').  
 And, yes, this nice Approach is even gender sensitive :-)
-For a History about Develompment, see [this Blog Post](https://hoernerfranzracing.de/werner/blog/spam-schleuder-version-2-0).
+For a History about Develompment, see [this Blog Post](https://werner.hoernerfranzracing.de/blog/2022-bulkmail/).
 
 This is an improved Version from this [original gist](https://gist.github.com/wernerjoss/9ba0d815bb91d043f929d98670f99064).  
 After some more improvements and future plannings (see TODO) I decided to make a real project out of it.  
