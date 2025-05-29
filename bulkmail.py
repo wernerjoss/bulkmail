@@ -67,7 +67,7 @@ def send_email(FROM, TO, SUBJECT, TEXT, att_file):
 
 def usage(progname):
 	print('usage: %s [-l -s -n -d Delay] -r <RecListFileName> -m <MsgFileName> -a <AttachFileName>' % progname)
-	print('(-l = create Logfile, -s = Simulate, -n = Nice)')
+	print('(-l = create Logfile, -s = Simulate, -n = Nice, -p = Polite)')
 	sys.exit(2)
 
 # read config from yaml file:
@@ -111,7 +111,7 @@ Delay = 0
 try:
 	progname = sys.argv[0]
 	argv = sys.argv[1:] # wichtig !
-	opts, args = getopt.getopt(argv,"lsnhd:r:m:a:",["RecListFileName=","MsgFileName=","AttachFileName=","Delay="])
+	opts, args = getopt.getopt(argv,"lsnphd:r:m:a:",["RecListFileName=","MsgFileName=","AttachFileName=","Delay="])
 	#print ('opts',opts)
 	#print ('argv',argv)
 except getopt.GetoptError as err:
@@ -135,6 +135,9 @@ for opt, arg in opts:
 	elif opt == '-n':
 		Nice = True
 		# print ('Nice', Nice)
+	elif opt == '-p':
+		Polite = True
+		# print ('Polite', Polite)
 	elif opt == '-s':
 		Simulate = True
 		# print ('Simulate')
@@ -208,11 +211,23 @@ try:
 						Greet = 'Lieber'
 					elif (gender == 'female'):
 						Greet = 'Liebe'
+				if (Polite):
+					if (gender == 'male'):
+						Greet = 'Sehr geehrter Herr'
+					elif (gender == 'female'):
+						Greet = 'Sehr geehrte Frau'
 			else:
 				Greet = 'Hello'
 				if (Nice):
 					Greet = 'Dear'
+				if (Polite):
+					if (gender == 'male'):
+						Greet = 'Dear Mr.'
+					elif (gender == 'female'):
+						Greet = 'Dear Mrs.'
 			TEXT = '%s %s,\n%s ' % (Greet, Vorname, Msg)
+			if (Polite):
+				TEXT = '%s %s,\n%s ' % (Greet, Name, Msg)
 			# print('%s %s\n' % (Greet, Vorname))
 			if (not Simulate):
 				send_email(FROM, TO, SUBJECT, TEXT, AttachFileName)

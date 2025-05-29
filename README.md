@@ -41,6 +41,7 @@ Here is a short Explanation of available Options:
 -   -l : create Logfile
 -   -s : Simulate (do not really send Mails, just list what would be sent)
 -   -n : nice - use 'Liebe(r)' instead of 'Hallo' as Salutation
+-   -p : polite - use 'Sehr geehrte(r)' as Salutation
 -   -d : (followed by Number) Delay between sending consecutive Mails
 -	-a : Attachment (=File to attach to Mail)
 -   -h : Help 

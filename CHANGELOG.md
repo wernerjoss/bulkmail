@@ -1,3 +1,9 @@
+# v0.1.3
+##  28/05/2025
+
+1. [](#new)
+    * New Option -p (=Polite) - Adress Recipient like 'Sehr geehrter Herr ...'
+
 # v0.1.2
 ##  28/09/2022
 
