@@ -67,6 +67,8 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
                 ArgList.append('-l')
             if (self.checkBox_3.isChecked() == True):
                 ArgList.append('-n')
+            if (self.checkBox_4.isChecked() == True):
+                ArgList.append('-p')
             Delay = 0
             if (self.spinBox.value() > 0):
                 Delay = self.spinBox.value()
@@ -150,7 +152,7 @@ app = QApplication(sys.argv)
 
 w = MainWindow()
 #   w.resize(1440,1024)
-title = "bmgui.py v 0.1.2 - Frontend for bulkmail.py (C) Werner Joss 2022"
+title = "bmgui.py v 0.1.3 - Frontend for bulkmail.py (C) Werner Joss 2025"
 w.setWindowTitle(title)
 
 w.show()
