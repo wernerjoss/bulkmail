@@ -97,6 +97,7 @@ pwd = cfg['pwd']
 
 Simulate = False	# nomen est omen :)
 Nice = False #  True: Anrede 'Liebe(r)' statt 'Hallo' :)
+Polite = False
 CreateLogFile = False
 TO = [FROM]  # must be a list
 SUBJECT = 'Test bulk email'
