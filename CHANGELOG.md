@@ -1,3 +1,9 @@
+# v0.1.4
+##  24/10/2025
+
+1. [](#new)
+    * don't crash if gender_guesser cannot be loaded, just disable Options -n, -p in that case
+    
 # v0.1.3
 ##  28/05/2025
 

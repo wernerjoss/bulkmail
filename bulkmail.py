@@ -15,8 +15,10 @@
 # ....fix some bugs 18.03.18
 # ....ported to python3 02/2020
 
-# Note: from python3.11 (Debian bookworm), this needs a dedicated environment, e.g. in ~/.env/venv with gender-guesser and PyYAML installed,
+# Note: from python3.11 (Debian bookworm), this needs a dedicated environment, e.g. in ~/.env/venv with gender-guesser installed,
 # see https://python.land/virtual-environments/virtualenv
+
+# as of 10/2025, import gender_guesser.detector is checked if availabe (e.g. via venv) (try/Except), so will still work anyway if not (but without Options Nice, Polite)
 
 import getopt, os, sys
 import smtplib
@@ -27,8 +29,13 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 import codecs
 import yaml # needed for cfgfile
-import gender_guesser.detector as gender_detector
-
+No_gender = True	# Flag indicates gender_guesser.detector is not available (could not be imported)
+try:
+	import gender_guesser.detector as gender_detector
+	No_gender = False
+except ImportError as e:
+	print ("Warning: gender_guesser Library not found, Options -n, -p are not availabe")
+	
 def send_email(FROM, TO, SUBJECT, TEXT, att_file):
 
 	date = datetime.datetime.now().strftime('%d %b %Y %H:%M')
@@ -146,6 +153,10 @@ for opt, arg in opts:
 		print('invalid option ', arg)
 		sys.exit(2)
 
+if (No_gender):	# if gender_guesser.detector is not available (could not be imported), force Nice and Polite to False
+	Nice = False
+	Polite = False
+	
 if (len(MsgFileName) < 1) and (len(RecListFileName) < 1):
 	usage(progname)
 if len(MsgFileName) < 1:
@@ -182,7 +193,8 @@ except:
 		LogFile.write('could not read %s - exiting' % MsgFileName)
 	sys.exit()
 
-d = gender_detector.Detector()
+if (No_gender == False):
+	d = gender_detector.Detector()
 # process RecListFile, send emails to each recipient
 try:
 	RecListFile = open(RecListFileName, 'r')
@@ -203,7 +215,8 @@ try:
 			mailadr = parts[2]
 			TO = []
 			TO.append(Vorname + ' ' + Name + ' ' + mailadr)
-			gender = d.get_gender(Vorname)
+			if (No_gender == False):
+				gender = d.get_gender(Vorname)
 			# print('Gender:', gender)
 			if (lang == 'de'):
 				Greet = 'Hallo' # default
