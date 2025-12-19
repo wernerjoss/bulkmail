@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # derived from: https://www.pythonguis.com/tutorials/qprocess-external-programs/
 
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QPlainTextEdit,
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton, QPlainTextEdit,
                                 QVBoxLayout, QWidget, QFileDialog)
 
-from PyQt5.QtCore import QProcess
+from PyQt6.QtCore import QProcess
 import sys, os
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 import bmgui_layout
 import yaml
 import webbrowser
@@ -86,21 +86,22 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
             self.p.start("python3", ArgList)  # JEDES arg extra !!
             
     def openAttachmentDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;All Files (*.*)", options=options)
+        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "*.*","All Files (*.*)")
         if fileName:
             #   print(fileName)
             self.Attachment = fileName
             self.message('Attachment: ' + self.Attachment)
     
     def openRecFileDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Text Files (*.lst)", options=options)
-        if fileName:
+        dialog = QFileDialog(self)
+        dialog.setNameFilter("List Files (*.lst *.txt)")
+        dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        dialog.setViewMode(QFileDialog.ViewMode.Detail)
+        dialog.setOption(QFileDialog.Option.DontUseNativeDialog, True)
+        if dialog.exec():
             #   print(fileName)
-            self.RecFile = fileName
+            selected_files = file_names = dialog.selectedFiles()  #fileName
+            self.RecFile = selected_files[0]
             self.message('Recipient File: ' + self.RecFile)
             if self.p is None:
                 self.p = QProcess()
@@ -108,9 +109,7 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
                 self.p.start(self.editor, [self.RecFile])
     
     def openMsgFileDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Text Files (*.txt)", options=options)
+        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "*.txt","Text Files (*.txt)")
         if fileName:
             #   print(fileName)
             self.MsgFile = fileName
@@ -132,9 +131,9 @@ class MainWindow(QMainWindow, bmgui_layout.Ui_MainWindow):
 
     def handle_state(self, state):
         states = {
-            QProcess.NotRunning: 'Not running',
-            QProcess.Starting: 'Starting',
-            QProcess.Running: 'Running',
+            QProcess.ProcessState.NotRunning: 'Not running',
+            QProcess.ProcessState.Starting: 'Starting',
+            QProcess.ProcessState.Running: 'Running',
         }
         state_name = states[state]
         #   self.message(f"State changed: {state_name}")
@@ -152,10 +151,10 @@ app = QApplication(sys.argv)
 
 w = MainWindow()
 #   w.resize(1440,1024)
-title = "bmgui.py v 0.1.3 - Frontend for bulkmail.py (C) Werner Joss 2025"
+title = "bmgui.py v 0.1.5 - Frontend for bulkmail.py (C) Werner Joss 2025"
 w.setWindowTitle(title)
 
 w.show()
 
 app.setStyle("Fusion")
-app.exec_()
+app.exec()

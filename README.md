@@ -19,7 +19,7 @@ The CLI Version needs the following nonstandard Python3 Package installed:
 which can lead to some confusion, e.g. with Python3 from Debian 12, this can be solved by creating a [virtual environment](https://python.land/virtual-environments/virtualenv), in which case there must also [PyYAML](https://pypi.org/project/PyYAML/) be installed.
 - note that from v0.1.4, bulkmail.py will also work if gender_guesser cannot be loaded, just disable Options -n, -p in that case
 
-The GUI Frontend also needs PyQt5.
+The GUI Frontend also needs PyQt5 (PyQt6 from Version 0.1.5).
 
 ## Usage:
 The CLI Version, bulkmail.py, is the core function of this Program.  
